@@ -1,8 +1,8 @@
 import http from "../../http-common";
 import authHeader from "../auth/auth-header";
 
-class UserService {
-
+class EmployeeService {
+    
 }
 
-export default new UserService();
+export default new EmployeeService();
