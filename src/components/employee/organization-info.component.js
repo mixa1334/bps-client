@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 
 export default class OrganizationInfo extends Component {
-  // constructor(props) {
-  //   super(props);
+  constructor(props) {
+    super(props);
 
-  // }
+  }
 
-  // componentDidMount() {
-  // }
+  componentDidMount() {
+  }
 
   render() {
     return (
@@ -15,8 +15,8 @@ export default class OrganizationInfo extends Component {
 
     <div className="container-organization-analyst-info">
       <h1 className="head">Organization info</h1>
-      <p>Name: current name</p>
-      <p>Available funds: current funds</p>
+      <p>Name: food shop</p>
+      <p>Available funds: 15000.00</p>
       <button type="submit" className="btn btn-primary btn-lg btn-danger">Leave organization</button>
       <br />
       <br />
@@ -25,12 +25,12 @@ export default class OrganizationInfo extends Component {
 
     <div className="container-organization-analyst-info">
       <h1 className="head">Employee profile</h1>
-      <p style={{marginBottom: '0px', paddingLeft: '4px',}}>Role: role</p>
+      <p style={{marginBottom: '0px', paddingLeft: '4px',}}>Role: Analyst</p>
       
       <div className="row">
           <div className="col-sm-3 p-3" style={{lineHeight: '20px',}}><label for="speciality1">Speciality:</label>
               <select className="form-select form-select-sm">
-                  <option>1</option>
+                  <option>Marketer</option>
                   <option>2</option>
                   <option>3</option>
                   <option>4</option>

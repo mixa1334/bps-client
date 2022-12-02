@@ -5,7 +5,7 @@ import "./App.css";
 
 import AuthService from "./services/auth/auth.service";
 
-import BusinessPlans from "./components/analyst/business_plans.component";
+import BusinessPlans from "./components/analyst/business-plans.component";
 import OrganizationModeration from "./components/director/organization-moderation.component";
 import Specialities from "./components/director/specialities.component";
 import OrganizationInfo from "./components/employee/organization-info.component";
@@ -75,11 +75,6 @@ class App extends Component {
             BPS
           </Link>
           <div className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <Link to={"/home"} className="nav-link">
-                Home
-              </Link>
-            </li>
 
             {showUserBoard && (
               <li className="nav-item">
@@ -135,7 +130,7 @@ class App extends Component {
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link to={"/profile"} className="nav-link">
-                  {currentUser.username}
+                  Profile
                 </Link>
               </li>
               <li className="nav-item">
