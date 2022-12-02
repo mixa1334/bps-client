@@ -30,3 +30,91 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+
+
+.head {
+  text-align: center;
+  font-size: 30px;
+}
+
+.form-create {
+  margin-left: 500px;
+  margin-right: 500px;
+}
+
+.form-create-buisness-tasks {
+  margin-left: 150px;
+  margin-right: 150px;
+}
+
+.container-buisness-task {
+  line-height: 5px;
+}
+
+
+.container-table {
+  max-width: 1000px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 70px;
+  padding-left: 70px;
+}
+
+.container-table-director {
+  max-width: 1000px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+
+.container-organization-info {
+  max-width: 1000px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 70px;
+  padding-left: 70px;
+  font-size: large;
+}
+
+
+.container-organization-analyst-info {
+  max-width: 1000px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 70px;
+  padding-left: 70px;
+  font-size: large;
+}
+
+.container-organization-analyst-employee {
+  max-width: 1000px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 70px;
+  padding-left: 70px;
+  font-size: large;
+}
+
+.container-buisness-tasks {
+  max-width: 1000px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 200px;
+  padding-left: 200px;
+}
+
+
+.btn
+{
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+}

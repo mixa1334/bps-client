@@ -1,23 +1,21 @@
-import axios from 'axios';
-import authHeader from './auth-header';
-
-const API_URL = 'http://localhost:8080/bps/';
+import http from "../../http-common";
+import authHeader from "../auth/auth-header";
 
 class UserService {
   getPublicContent() {
-    return axios.get(API_URL + 'all');
+    return http.get("/all");
   }
 
   getUserBoard() {
-    return axios.get(API_URL + 'employee', { headers: authHeader() });
+    return http.get("/employee", { headers: authHeader() });
   }
 
   getModeratorBoard() {
-    return axios.get(API_URL + 'analyst', { headers: authHeader() });
+    return http.get("/analyst", { headers: authHeader() });
   }
 
   getAdminBoard() {
-    return axios.get(API_URL + 'director', { headers: authHeader() });
+    return http.get("/director", { headers: authHeader() });
   }
 }
 

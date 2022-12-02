@@ -1,11 +1,9 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:8080/bps/";
+import http from "../../http-common";
 
 class AuthService {
   login(login, password) {
-    return axios
-      .post(API_URL + "auth/login", {
+    return http
+      .post("/auth/login", {
         login,
         password
       })
@@ -23,7 +21,7 @@ class AuthService {
   }
 
   register(username, email, password) {
-    return axios.post(API_URL + "auth/signup", {
+    return http.post("/auth/signup", {
       username,
       email,
       password
