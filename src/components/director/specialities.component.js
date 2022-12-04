@@ -1,16 +1,36 @@
 import React, { Component } from "react";
 
+import AuthService from "../../services/auth/auth.service";
+import SpecialityService from "../../services/organization/speciality.service";
+
 export default class Specialities extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      specialities: []
+    };
   }
 
   componentDidMount() {
+    const user = AuthService.getCurrentUser();
+
+    if(user){
+      SpecialityService.getAllByOrgId(user.organizationId)
+      .then(response => {
+        this.setState({
+          specialities: response.data.specialities
+        });
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
   }
 
-
   render() {
+    const { specialities } = this.state;
+
     return (
       <>
       
@@ -24,18 +44,15 @@ export default class Specialities extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Name: engineer <br/> Disription: engineer</td>
-                <td>
-                  <button type="button" className="btn btn-primary">Delete</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Name: marketer <br/> Disription: marketer</td>
-                <td>
-                  <button type="button" className="btn btn-primary">Delete</button>
-                </td>
-              </tr>
+
+              {specialities && specialities.map((speciality) => (
+                <tr>
+                  <td>Name: {speciality.name} <br/> Disription: {speciality.description}</td>
+                  <td>
+                    <button type="button" className="btn btn-primary">Delete</button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
         </table>
       </div>
