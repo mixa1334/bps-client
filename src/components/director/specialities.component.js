@@ -7,12 +7,24 @@ export default class Specialities extends Component {
   constructor(props) {
     super(props);
 
+    this.getAllSpecialities = this.getAllSpecialities.bind(this);
+    this.deleteSpecialityById = this.deleteSpecialityById.bind(this);
+    this.onChangeName = this.onChangeName.bind(this);
+    this.onChangeDescription = this.onChangeDescription.bind(this);
+    this.createNewSpeciality = this.createNewSpeciality.bind(this);
+
     this.state = {
-      specialities: []
+      specialities: [],
+      newName: "",
+      newDescription: ""
     };
   }
 
   componentDidMount() {
+    this.getAllSpecialities();
+  }
+
+  getAllSpecialities(){
     const user = AuthService.getCurrentUser();
 
     if(user){
@@ -26,6 +38,46 @@ export default class Specialities extends Component {
         console.log(e);
       });
     }
+  }
+
+  deleteSpecialityById(specialityId){
+    const user = AuthService.getCurrentUser();
+
+    if(user){
+      SpecialityService.deleteById(user.organizationId, specialityId)      
+      .catch(e => {
+        console.log(e);
+      });
+    }
+
+    window.location.reload(false);
+  }
+
+  onChangeName(e){
+    this.setState({
+      newName: e.target.value
+    });
+  }
+
+  onChangeDescription(e){
+    this.setState({
+      newDescription: e.target.value
+    });
+  }
+
+  createNewSpeciality(){
+    var data = {
+      name: this.state.newName,
+      description: this.state.newDescription
+    };
+
+    const user = AuthService.getCurrentUser();
+
+    if(user){
+      SpecialityService.create(user.organizationId, data);
+    }
+
+    window.location.reload(false);
   }
 
   render() {
@@ -49,7 +101,7 @@ export default class Specialities extends Component {
                 <tr>
                   <td>Name: {speciality.name} <br/> Disription: {speciality.description}</td>
                   <td>
-                    <button type="button" className="btn btn-primary">Delete</button>
+                    <button type="button" className="btn btn-primary" onClick={() => this.deleteSpecialityById(speciality.id)}>Delete</button>
                   </td>
                 </tr>
               ))}
@@ -61,14 +113,16 @@ export default class Specialities extends Component {
         <h1 className="head">Add new speciality</h1>
         <div className="form-create">
           <label for="nameSpesiality">Name</label>
-          <input type="text" className="form-control" id="nameSpeciality"  placeholder="enter name"/>
+          <input type="text" className="form-control" id="nameSpeciality"  placeholder="enter name"
+           required value={this.state.newName} onChange={this.onChangeName}/>
         </div>
         <div className="form-create">
           <label for="descriptionSpeciality">Disription</label>
-          <input type="text" className="form-control" id="descriptionSpeciality" placeholder="enter disription"/>
+          <input type="text" className="form-control" id="descriptionSpeciality" placeholder="enter disription"
+          required value={this.state.newDescription} onChange={this.onChangeDescription}/>
         </div>
         <br/>
-        <button type="submit" className="btn btn-primary btn-lg">Add</button>
+        <button type="submit" className="btn btn-primary btn-lg" onClick={this.createNewSpeciality}>Add</button>
       </div>
       
       </>
