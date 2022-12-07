@@ -40,25 +40,20 @@ export default class Profile extends Component {
   }
 
   getUserInfo(){
-    const user = AuthService.getCurrentUser();
-    if(user){
-      UserService.getUserInfo(user.userId)
-      .then(response => {
-        this.setState({
-          name: response.data.name,
-          surname: response.data.surname,
-          age: response.data.age,
-          phoneNumber: response.data.phoneNumber,
-          completedTasks: response.data.completedTasks,
-          completedAfterDeadLine: response.data.completedAfterDeadLine,
-          completedOnTime: response.data.completedOnTime,
-          efficiency: response.data.efficiency
-        });
-      })
-      .catch(e => {
-        console.log(e);
+    const userId = AuthService.getCurrentUser().userId;
+    UserService.getInfo(userId)
+    .then(response => {
+      this.setState({
+        name: response.name,
+        surname: response.surname,
+        age: response.age,
+        phoneNumber: response.phoneNumber,
+        completedTasks: response.completedTasks,
+        completedAfterDeadLine: response.completedAfterDeadLine,
+        completedOnTime: response.completedOnTime,
+        efficiency: response.efficiency
       });
-    }
+    });
   }
 
   onChangeName(e){
@@ -92,17 +87,11 @@ export default class Profile extends Component {
       age: this.state.newAge ? this.state.newAge : this.state.age,
       phoneNumber: this.state.newPhoneNumber ? this.state.newPhoneNumber : this.state.phoneNumber
     }
-
-    const user = AuthService.getCurrentUser();
-
-    if(user){
-      UserService.updateUserInfo(user.userId, data)
-      .catch(e => {
-        console.log(e);
-      });
-    }
-
-    window.location.reload(false);
+    const userId = AuthService.getCurrentUser().userId;
+    UserService.updateInfo(userId, data)
+    .then(()=>{
+      window.location.reload(false);
+    });
   }
 
   onChangeLogin(e){
@@ -112,19 +101,14 @@ export default class Profile extends Component {
   }
 
   changeLogin(){
-    const user = AuthService.getCurrentUser();
-
-    if(this.state.newLogin && user){
-      UserService.changeUserLogin(user.userId, this.state.newLogin)
-      .catch(e => {
-        console.log(e);
-      });
-
-      AuthService.updateUserInfo()
-      .then(()=>{
+    const newLogin = this.state.newLogin;
+    if(newLogin){
+      const userId = AuthService.getCurrentUser().userId;
+      UserService.changeLogin(userId, newLogin)
+      .then(response => {
+        AuthService.updateToken(response.token);
         window.location.reload(false);
-      });
-
+      })
     }
   }
 
@@ -135,14 +119,13 @@ export default class Profile extends Component {
   }
 
   changePassword(){
-    const user = AuthService.getCurrentUser();
-
-    if(this.state.newPassword && user){
-      UserService.changePassword(user.userId, this.state.newPassword)
-      .catch(e => {
-        console.log(e);
+    const newPassword = this.state.newPassword;
+    if(newPassword){
+      const userId = AuthService.getCurrentUser().userId;
+      UserService.changePassword(userId, newPassword)
+      .then(()=>{
+        window.location.reload(false);
       });
-      window.location.reload(false);
     }
   }
 
@@ -192,7 +175,7 @@ export default class Profile extends Component {
     </div>
 
       <div className="container-table">
-        <h1 className="head">Update login&password</h1>
+        <h1 className="head">Update login and password</h1>
         <br/>
         <div className="row">
             <div className="col"> 

@@ -1,4 +1,4 @@
-import http from "../../http-common";
+import api from "../api";
 import authHeader from "../auth/auth-header";
 
 class OrganizationService {

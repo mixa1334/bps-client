@@ -1,27 +1,35 @@
-import http from "../../http-common";
+import api from "../api";
 import authHeader from "../auth/auth-header";
 
 import AuthService from "../auth/auth.service";
 
 class UserService {
-    getUserInfo(userId){
-        return http.get('/users/'+userId);
+    async getInfo(userId){
+        const response = await api
+        .get('/users/' + userId);
+        return response.data;
     }
 
-    updateUserInfo(userId, data){
-        return http.put('/users/'+userId, data);
+    async updateInfo(userId, data){
+        const response = await api
+        .put('/users/' + userId, data);
+        return response.data;
     }
 
-    changeUserLogin(userId, newLogin){
-        return http.put('/users/' + userId + '/login', {
+    async changeLogin(userId, newLogin){
+        const response = await api
+        .put('/users/' + userId + '/login', {
             newLogin
         });
+        return response.data;
     }
 
-    changePassword(userId, newPassword){
-        return http.put('/users/'+userId+'/password', {
+    async changePassword(userId, newPassword){
+        const response = await api
+        .put('/users/' + userId + '/password', {
             newPassword
         });
+        return response.data;
     }
 }
 

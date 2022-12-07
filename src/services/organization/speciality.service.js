@@ -1,17 +1,23 @@
-import http from "../../http-common";
+import api from "../api";
 import authHeader from "../auth/auth-header";
 
 class SpecialityService {
-    getAllByOrgId(orgId){
-        return http.get('/organizations/'+orgId+'/specialities');
+    async getAllByOrgId(orgId){
+        const response = await api
+        .get('/organizations/' + orgId + '/specialities');
+        return response.data;
     }
 
-    deleteById(orgId, specialityId){
-        return http.delete('/organizations/'+orgId+'/specialities/'+specialityId);
+    async deleteById(orgId, specialityId){
+        const response = await api
+        .delete('/organizations/' + orgId + '/specialities/' + specialityId);
+        return response.data;
     }
 
-    create(orgId, data){
-        return http.post('/organizations/'+orgId+'/specialities', data);
+    async create(orgId, data){
+        const response = await api
+        .post('/organizations/' + orgId + '/specialities', data);
+        return response.data;
     }
 }
 

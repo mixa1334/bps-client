@@ -1,12 +1,12 @@
-import http from "../../http-common";
+import api from "../api";
 
 class AuthService {
   async login(login, password) {
-    const response = await http
-      .post("/auth/login", {
-        login,
-        password
-      });
+    const response = await api
+    .post("/auth/login", {
+      login,
+      password
+    });
     if (response.data.token) {
       localStorage.setItem("user", JSON.stringify(response.data));
     }
@@ -17,23 +17,32 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
-  register(username, email, password) {
-    return http.post("/auth/signup", {
+  async register(username, email, password) {
+    const response = await api
+    .post("/auth/signup", {
       username,
       email,
       password
     });
+    return response;
   }
 
   getCurrentUser() {
     return JSON.parse(localStorage.getItem("user"));
   }
 
+  updateToken(newToken){
+    let user = JSON.parse(localStorage.getItem("user"));
+    user.token = newToken;
+    localStorage.setItem("user", JSON.stringify(user));
+  }
+
   async updateUserInfo(){
     const userId = JSON.parse(localStorage.getItem("user")).userId;
-    const response = await http.post("/auth/user_info", {
+    const response = await api
+    .post("/auth/user_info", {
       userId
-      });
+    });
     if (response.data.token) {
       localStorage.setItem("user", JSON.stringify(response.data));
     }

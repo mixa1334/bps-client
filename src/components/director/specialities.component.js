@@ -25,32 +25,21 @@ export default class Specialities extends Component {
   }
 
   getAllSpecialities(){
-    const user = AuthService.getCurrentUser();
-
-    if(user){
-      SpecialityService.getAllByOrgId(user.organizationId)
-      .then(response => {
-        this.setState({
-          specialities: response.data.specialities
-        });
-      })
-      .catch(e => {
-        console.log(e);
+    const organizationId = AuthService.getCurrentUser().organizationId;
+    SpecialityService.getAllByOrgId(organizationId)
+    .then(response => {
+      this.setState({
+        specialities: response.specialities
       });
-    }
+    });
   }
 
   deleteSpecialityById(specialityId){
-    const user = AuthService.getCurrentUser();
-
-    if(user){
-      SpecialityService.deleteById(user.organizationId, specialityId)      
-      .catch(e => {
-        console.log(e);
-      });
-    }
-
-    window.location.reload(false);
+    const organizationId = AuthService.getCurrentUser().organizationId;
+    SpecialityService.deleteById(organizationId, specialityId)
+    .then(()=>{
+      window.location.reload(false);
+    });
   }
 
   onChangeName(e){
@@ -70,17 +59,11 @@ export default class Specialities extends Component {
       name: this.state.newName,
       description: this.state.newDescription
     };
-
-    const user = AuthService.getCurrentUser();
-
-    if(user){
-      SpecialityService.create(user.organizationId, data)
-      .catch(e => {
-        console.log(e);
-      });
-    }
-
-    window.location.reload(false);
+    const organizationId = AuthService.getCurrentUser().organizationId;
+    SpecialityService.create(organizationId, data)
+    .then(()=>{
+      window.location.reload(false);
+    });
   }
 
   render() {
