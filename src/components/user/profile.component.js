@@ -1,42 +1,190 @@
 import React, { Component } from "react";
-import { Navigate } from "react-router-dom";
 import AuthService from "../../services/auth/auth.service";
+import UserService from "../../services/employee/user.service";
 
 export default class Profile extends Component {
   constructor(props) {
     super(props);
 
+    this.getUserInfo = this.getUserInfo.bind(this);
+    this.onChangeName = this.onChangeName.bind(this);
+    this.onChangeSurname = this.onChangeSurname.bind(this);
+    this.onChangeAge = this.onChangeAge.bind(this);
+    this.onChangePhoneNumber = this.onChangePhoneNumber.bind(this);
+    this.updateUserInfo = this.updateUserInfo.bind(this);
+    this.onChangeLogin = this.onChangeLogin.bind(this);
+    this.onChangePassword = this.onChangePassword.bind(this);
+    this.changeLogin = this.changeLogin.bind(this);
+    this.changePassword = this.changePassword.bind(this);
+
+    this.state = {
+      name: "",
+      surname: "",
+      age: 0,
+      phoneNumber: "",
+      completedTasks: 0,
+      completedAfterDeadLine: 0,
+      completedOnTime: 0,
+      efficiency: 0,
+      newName: "",
+      newSurname: "",
+      newAge: undefined,
+      newPhoneNumber: "",
+      newLogin: "",
+      newPassword: ""
+    };
   }
 
   componentDidMount() {
+    this.getUserInfo();
+  }
+
+  getUserInfo(){
+    const user = AuthService.getCurrentUser();
+    if(user){
+      UserService.getUserInfo(user.userId)
+      .then(response => {
+        this.setState({
+          name: response.data.name,
+          surname: response.data.surname,
+          age: response.data.age,
+          phoneNumber: response.data.phoneNumber,
+          completedTasks: response.data.completedTasks,
+          completedAfterDeadLine: response.data.completedAfterDeadLine,
+          completedOnTime: response.data.completedOnTime,
+          efficiency: response.data.efficiency
+        });
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+  }
+
+  onChangeName(e){
+    this.setState({
+      newName: e.target.value
+    });
+  }
+
+  onChangeSurname(e){
+    this.setState({
+      newSurname: e.target.value
+    });
+  }
+
+  onChangeAge(e){
+    this.setState({
+      newAge: e.target.value
+    });
+  }
+
+  onChangePhoneNumber(e){
+    this.setState({
+      newPhoneNumber: e.target.value
+    });
+  }
+
+  updateUserInfo(){
+    var data = {
+      name: this.state.newName ? this.state.newName : this.state.name,
+      surname: this.state.newSurname ? this.state.newSurname: this.state.surname,
+      age: this.state.newAge ? this.state.newAge : this.state.age,
+      phoneNumber: this.state.newPhoneNumber ? this.state.newPhoneNumber : this.state.phoneNumber
+    }
+
+    const user = AuthService.getCurrentUser();
+
+    if(user){
+      UserService.updateUserInfo(user.userId, data)
+      .catch(e => {
+        console.log(e);
+      });
+    }
+
+    window.location.reload(false);
+  }
+
+  onChangeLogin(e){
+    this.setState({
+      newLogin: e.target.value
+    });
+  }
+
+  changeLogin(){
+    const user = AuthService.getCurrentUser();
+
+    if(this.state.newLogin && user){
+      UserService.changeUserLogin(user.userId, this.state.newLogin)
+      .catch(e => {
+        console.log(e);
+      });
+
+      AuthService.updateUserInfo()
+      .then(()=>{
+        window.location.reload(false);
+      });
+
+    }
+  }
+
+  onChangePassword(e){
+    this.setState({
+      newPassword: e.target.value
+    });
+  }
+
+  changePassword(){
+    const user = AuthService.getCurrentUser();
+
+    if(this.state.newPassword && user){
+      UserService.changePassword(user.userId, this.state.newPassword)
+      .catch(e => {
+        console.log(e);
+      });
+      window.location.reload(false);
+    }
   }
 
   render() {
+    const {name,
+    surname,
+    age,
+    phoneNumber,
+    completedTasks,
+    completedAfterDeadLine,
+    completedOnTime,
+    efficiency} = this.state;
+
     return (
       <>
       
       <div className="container">
         <h1 className="head">Profile</h1>
         <div className="form-create">
-          <label for="nameProfile">Name:</label>
-          <input type="text" className="form-control" id="nameProfile"  placeholder="Alex"/>
+          <label for="nameProfile">Name: {name}</label>
+          <input type="text" className="form-control" id="nameProfile"  placeholder="new name"
+          required value={this.state.newName} onChange={this.onChangeName}/>
         </div>
         <div className="form-create">
-          <label for="surnameProfile">Surname:</label>
-          <input type="text" className="form-control" id="surnameProfile" placeholder="Alex"/>
+          <label for="surnameProfile">Surname: {surname}</label>
+          <input type="text" className="form-control" id="surnameProfile" placeholder="new surname"
+          required value={this.state.newSurname} onChange={this.onChangeSurname}/>
         </div>
         <div className="form-create">
-          <label for="ageProfile">Age:</label>
-          <input type="text" className="form-control" id="ageProfile" placeholder="29"/>
+          <label for="ageProfile">Age: {age}</label>
+          <input type="text" className="form-control" id="ageProfile" placeholder="new age"
+          required value={this.state.newAge} onChange={this.onChangeAge}/>
         </div>
         <div className="form-create">
-          <label for="phoneProfile">Phone number:</label>
-          <input type="text" className="form-control" id="phoneProfile" placeholder="+375 (29) 111-11-11"/>
+          <label for="phoneProfile">Phone number: {phoneNumber}</label>
+          <input type="text" className="form-control" id="phoneProfile" placeholder="new phone number (+375 (29) xxx-xx-xx)"
+          required value={this.state.newPhoneNumber} onChange={this.onChangePhoneNumber}/>
         </div>
           
         <br/>
   
-        <button type="submit" className="btn btn-primary btn-lg">Save</button>
+        <button type="submit" className="btn btn-primary btn-lg" onClick={this.updateUserInfo}>Save</button>
         <br/>
         <br/>
         <br/>
@@ -48,19 +196,21 @@ export default class Profile extends Component {
         <br/>
         <div className="row">
             <div className="col"> 
-              <input type="password" className="form-control" id="newLogin"  placeholder="Input new login"/>
+              <input type="password" className="form-control" id="newLogin"  placeholder="Input new login"
+              required value={this.state.newLogin} onChange={this.onChangeLogin}/>
             </div>  
             <div className="col">
-              <button type="button" className="btn btn-primary">Update</button>
+              <button type="button" className="btn btn-primary" onClick={this.changeLogin}>Update</button>
             </div>
         </div>
         <br/>
         <div className="row">
             <div className="col"> 
-              <input type="password" className="form-control" id="newPassword"  placeholder="Input new password"/>
+              <input type="password" className="form-control" id="newPassword"  placeholder="Input new password"
+              required value={this.state.newPassword} onChange={this.onChangePassword}/>
             </div>  
             <div className="col">
-              <button type="button" className="btn btn-primary">Update</button>
+              <button type="button" className="btn btn-primary" onClick={this.changePassword}>Update</button>
             </div>
         </div>
         <br/>
@@ -68,10 +218,10 @@ export default class Profile extends Component {
 
       <div className="container">
         <h3><b>Statistics:</b></h3>
-        <h5>Compeled tasks: 1</h5>
-        <h5>Compeled after deadline: 0</h5>
-        <h5>Compeled on time: 1</h5>
-        <h5>Effeciency: 100%</h5>
+        <h5>Compeled tasks: {completedTasks}</h5>
+        <h5>Compeled after deadline: {completedAfterDeadLine}</h5>
+        <h5>Compeled on time: {completedOnTime}</h5>
+        <h5>Effeciency: {efficiency}</h5>
       </div>
       
       </>
