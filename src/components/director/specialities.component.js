@@ -74,7 +74,10 @@ export default class Specialities extends Component {
     const user = AuthService.getCurrentUser();
 
     if(user){
-      SpecialityService.create(user.organizationId, data);
+      SpecialityService.create(user.organizationId, data)
+      .catch(e => {
+        console.log(e);
+      });
     }
 
     window.location.reload(false);
