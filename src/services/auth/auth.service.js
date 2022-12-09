@@ -1,9 +1,12 @@
-import api from "../api";
+import axios from "axios";
+import authHeader from "./auth-header";
+
+const API_URL = "http://localhost:8080/bps";
 
 class AuthService {
   async login(login, password) {
-    const response = await api
-    .post("/auth/login", {
+    const response = await axios
+    .post(API_URL + "/auth/login", {
       login,
       password
     });
@@ -17,13 +20,9 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
-  async register(username, email, password) {
-    const response = await api
-    .post("/auth/signup", {
-      username,
-      email,
-      password
-    });
+  async register(data) {
+    const response = await axios
+    .post(API_URL + "/auth/signup", data);
     return response;
   }
 
@@ -39,9 +38,11 @@ class AuthService {
 
   async updateUserInfo(){
     const userId = JSON.parse(localStorage.getItem("user")).userId;
-    const response = await api
-    .post("/auth/user_info", {
+    const response = await axios
+    .post(API_URL + "/auth/user_info", {
       userId
+    }, { 
+      headers: authHeader()
     });
     if (response.data.token) {
       localStorage.setItem("user", JSON.stringify(response.data));
