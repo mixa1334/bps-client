@@ -39,7 +39,7 @@ class AuthService {
   async updateUserInfo(){
     const userId = JSON.parse(localStorage.getItem("user")).userId;
     const response = await axios
-    .post(API_URL + "/auth/user_info", {
+    .post(API_URL + "/auth/user_details", {
       userId
     }, { 
       headers: authHeader()
