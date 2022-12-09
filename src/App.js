@@ -40,7 +40,7 @@ class App extends Component {
         showAnalystBoard: user.roles.includes("ANALYST"),
         showDirectorBoard: user.roles.includes("DIRECTOR"),
         showEmployeeBoard: user.roles.includes("EMPLOYEE"),
-        showUserBoard: user.roles.includes("USER"),
+        showUserBoard: !user.roles.includes("EMPLOYEE"),
         currentUser: user,
       });
     }
