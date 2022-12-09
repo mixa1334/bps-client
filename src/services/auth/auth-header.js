@@ -1,5 +1,7 @@
+import authService from "./auth.service";
+
 export default function authHeader() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = authService.getCurrentUser();
 
   if (user && user.token) {
     return {
