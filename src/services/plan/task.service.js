@@ -1,5 +1,6 @@
 import axios from "axios";
 import authHeader from "../auth/auth-header";
+import authService from "../auth/auth.service";
 
 const API_URL = "http://localhost:8080/bps";
 
@@ -12,9 +13,9 @@ class TaskService {
     }
 
     async completeTask(orgId, planId, taskId){
-        const response = await axios.put(API_URL + "/organizations/" + orgId + "/business_plans/" + planId + "/tasks/" + taskId, {
-            headers: authHeader()
-        });
+        const accessToken = authService.getCurrentUser().token;
+        const response = await axios({ method: 'put', url: API_URL + "/organizations/" + orgId + "/business_plans/" + planId + "/tasks/" + taskId
+        , headers: { 'Authorization': accessToken } });
         return response.data;
     }
 
