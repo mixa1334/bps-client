@@ -17,6 +17,13 @@ class TaskService {
         });
         return response.data;
     }
+
+    async createNewTask(orgId, planId, data){
+        const resonse = await axios.post(API_URL + "/organizations/" + orgId + "/business_plans/" + planId + "/tasks", data, {
+            headers: authHeader()
+        });
+        return resonse.data;
+    }
 }
 
 export default new TaskService();
