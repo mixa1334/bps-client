@@ -1,7 +1,6 @@
 import axios from "axios";
 import authHeader from "../auth/auth-header";
-
-const API_URL = "http://localhost:8080/bps";
+import API_URL from "../api";
 
 class EmployeeService {
     async getEmployeeInfo(orgId, empId){
