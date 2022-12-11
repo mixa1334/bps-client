@@ -16,6 +16,7 @@ export default class Profile extends Component {
     this.onChangePassword = this.onChangePassword.bind(this);
     this.changeLogin = this.changeLogin.bind(this);
     this.changePassword = this.changePassword.bind(this);
+    this.refreshUserData = this.refreshUserData.bind(this);
 
     this.state = {
       name: "",
@@ -129,6 +130,13 @@ export default class Profile extends Component {
     }
   }
 
+  refreshUserData(){
+    AuthService.updateUserInfo()
+    .then(()=>{
+      window.location.reload(false);
+    });
+  }
+
   render() {
     const {name,
     surname,
@@ -143,7 +151,7 @@ export default class Profile extends Component {
       <>
       
       <div className="container">
-        <h1 className="head">Profile</h1>
+        <h1 className="head">Profile <button type="button" class="btn btn-secondary btn-sm" onClick={this.refreshUserData}>Refresh data</button></h1>
         <div className="form-create">
           <label for="nameProfile">Name: {name}</label>
           <input type="text" className="form-control" id="nameProfile"  placeholder="new name"
