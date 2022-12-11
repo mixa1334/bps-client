@@ -17,6 +17,13 @@ class EmployeeService {
         });
         return response.data;
     }
+
+    async getAllEmployeesInOrganization(orgId){
+        const response = await axios.get(API_URL + "/organizations/" + orgId + "/employees", {
+            headers: authHeader()
+        });
+        return response.data;
+    }
 }
 
 export default new EmployeeService();
