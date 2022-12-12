@@ -1,5 +1,4 @@
 import axios from "axios";
-import authHeader from "./auth-header";
 import API_URL from "../api";
 
 class AuthService {
@@ -36,13 +35,9 @@ class AuthService {
   }
 
   async updateUserInfo(){
-    const userId = JSON.parse(localStorage.getItem("user")).userId;
-    const response = await axios
-    .post(API_URL + "/auth/user_details", {
-      userId
-    }, { 
-      headers: authHeader()
-    });
+    const accessToken = JSON.parse(localStorage.getItem("user")).token;
+    const response = await axios({ method: 'post', url: API_URL + "/auth/user_details"
+      , headers: { 'Authorization': accessToken } });
     if (response.data.token) {
       localStorage.setItem("user", JSON.stringify(response.data));
     }
